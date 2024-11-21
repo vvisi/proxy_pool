@@ -63,7 +63,7 @@ def httpTimeOutValidator(proxy):
 
     try:
         r = head(conf.httpUrl, headers=HEADER, proxies=proxies, timeout=conf.verifyTimeout)
-        return True if r.status_code == 200 else False
+        return True if r.status_code == 200 and '<title>httpbin.org</title>' in r.text else False
     except Exception as e:
         return False
 
@@ -75,7 +75,7 @@ def httpsTimeOutValidator(proxy):
     proxies = {"http": "http://{proxy}".format(proxy=proxy), "https": "https://{proxy}".format(proxy=proxy)}
     try:
         r = head(conf.httpsUrl, headers=HEADER, proxies=proxies, timeout=conf.verifyTimeout, verify=False)
-        return True if r.status_code == 200 else False
+        return True if r.status_code == 200 and '<title>腾讯网</title>' in r.text else False
     except Exception as e:
         return False
 
