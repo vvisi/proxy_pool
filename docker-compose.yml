@@ -6,9 +6,9 @@ services:
     ports:
       - "5010:5010"
     links:
-      - proxy_redis
+      - redis
     environment:
-      DB_CONN: "redis://@proxy_redis:6379/0"
+      DB_CONN: "redis://@proxy_redis:6379/5"
   proxy_redis:
     image: "redis"
-    container_name: proxy_redis
+    container_name: redis
