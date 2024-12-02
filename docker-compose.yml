@@ -18,7 +18,7 @@ services:
       options:
         max-size: 10m
         max-file: 1
-  proxy_redis:
+  redis:
     image: "redis"
     container_name: redis
     restart: always
