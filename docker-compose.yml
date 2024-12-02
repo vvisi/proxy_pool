@@ -1,14 +1,36 @@
-version: '2'
+version: '3'
 services:
   proxy_pool:
     build: .
     container_name: proxy_pool
+    restart: always
     ports:
       - "5010:5010"
+    volumes:
+      - /home/proxy_pool/container:/app
     links:
       - redis
     environment:
-      DB_CONN: "redis://@proxy_redis:6379/5"
+      DB_CONN: "redis://@redis:16379/5"
+      REDIS_PASSWORD: "xsm"
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 1
   proxy_redis:
     image: "redis"
     container_name: redis
+    restart: always
+    ports:
+      - "16379:16379"
+    volumes:
+      - /home/redis/container:/data
+    command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+    environment:
+      REDIS_PASSWORD: "xsm"
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 1
