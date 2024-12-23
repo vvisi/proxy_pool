@@ -16,12 +16,13 @@
 -------------------------------------------------
 """
 __author__ = 'JHao'
-from redis.exceptions import TimeoutError, ConnectionError, ResponseError
-from redis.connection import BlockingConnectionPool
-from handler.logHandler import LogHandler
-from random import choice
-from redis import Redis
 import json
+from random import choice
+
+from handler.logHandler import LogHandler
+from redis import Redis
+from redis.connection import BlockingConnectionPool
+from redis.exceptions import ConnectionError, ResponseError, TimeoutError
 
 
 class SsdbClient(object):
@@ -42,10 +43,11 @@ class SsdbClient(object):
         """
         self.name = ""
         kwargs.pop("username")
-        self.__conn = Redis(connection_pool=BlockingConnectionPool(decode_responses=True,
-                                                                   timeout=5,
-                                                                   socket_timeout=5,
-                                                                   **kwargs))
+        self.__conn = Redis(
+            connection_pool=BlockingConnectionPool(
+                decode_responses=True, timeout=5, socket_timeout=5, **kwargs
+            )
+        )
 
     def get(self, https):
         """
@@ -54,7 +56,9 @@ class SsdbClient(object):
         """
         if https:
             items_dict = self.__conn.hgetall(self.name)
-            proxies = list(filter(lambda x: json.loads(x).get("https"), items_dict.values()))
+            proxies = list(
+                filter(lambda x: json.loads(x).get("https"), items_dict.values())
+            )
             return choice(proxies) if proxies else None
         else:
             proxies = self.__conn.hkeys(self.name)
@@ -111,7 +115,9 @@ class SsdbClient(object):
         """
         item_dict = self.__conn.hgetall(self.name)
         if https:
-            return list(filter(lambda x: json.loads(x).get("https"), item_dict.values()))
+            return list(
+                filter(lambda x: json.loads(x).get("https"), item_dict.values())
+            )
         else:
             return item_dict.values()
 
@@ -128,7 +134,10 @@ class SsdbClient(object):
         :return:
         """
         proxies = self.getAll(https=False)
-        return {'total': len(proxies), 'https': len(list(filter(lambda x: json.loads(x).get("https"), proxies)))}
+        return {
+            'total': len(proxies),
+            'https': len(list(filter(lambda x: json.loads(x).get("https"), proxies))),
+        }
 
     def changeTable(self, name):
         """

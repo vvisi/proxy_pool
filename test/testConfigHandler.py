@@ -12,8 +12,9 @@
 """
 __author__ = 'J_hao'
 
-from handler.configHandler import ConfigHandler
 from time import sleep
+
+from handler.configHandler import ConfigHandler
 
 
 def testConfig():
@@ -35,4 +36,3 @@ def testConfig():
 
 if __name__ == '__main__':
     testConfig()
-

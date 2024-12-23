@@ -17,13 +17,13 @@
 __author__ = 'JHao'
 
 import platform
-from werkzeug.wrappers import Response
-from flask import Flask, jsonify, request
 
-from util.six import iteritems
-from helper.proxy import Proxy
-from handler.proxyHandler import ProxyHandler
+from flask import Flask, jsonify, request
 from handler.configHandler import ConfigHandler
+from handler.proxyHandler import ProxyHandler
+from helper.proxy import Proxy
+from util.six import iteritems
+from werkzeug.wrappers import Response
 
 app = Flask(__name__)
 conf = ConfigHandler()
@@ -44,9 +44,17 @@ app.response_class = JsonResponse
 api_list = [
     {"url": "/get", "params": "type: ''https'|''", "desc": "get a proxy"},
     {"url": "/pop", "params": "", "desc": "get and delete a proxy"},
-    {"url": "/delete", "params": "proxy: 'e.g. 127.0.0.1:8080'", "desc": "delete an unable proxy"},
-    {"url": "/all", "params": "type: ''https'|''", "desc": "get all proxy from proxy pool"},
-    {"url": "/count", "params": "", "desc": "return proxy count"}
+    {
+        "url": "/delete",
+        "params": "proxy: 'e.g. 127.0.0.1:8080'",
+        "desc": "delete an unable proxy",
+    },
+    {
+        "url": "/all",
+        "params": "type: ''https'|''",
+        "desc": "get all proxy from proxy pool",
+    },
+    {"url": "/count", "params": "", "desc": "return proxy count"},
     # 'refresh': 'refresh proxy pool',
 ]
 
@@ -117,8 +125,13 @@ def runFlask():
                 super(StandaloneApplication, self).__init__()
 
             def load_config(self):
-                _config = dict([(key, value) for key, value in iteritems(self.options)
-                                if key in self.cfg.settings and value is not None])
+                _config = dict(
+                    [
+                        (key, value)
+                        for key, value in iteritems(self.options)
+                        if key in self.cfg.settings and value is not None
+                    ]
+                )
                 for key, value in iteritems(_config):
                     self.cfg.set(key.lower(), value)
 
@@ -129,7 +142,7 @@ def runFlask():
             'bind': '%s:%s' % (conf.serverHost, conf.serverPort),
             'workers': 4,
             'accesslog': '-',  # log to stdout
-            'access_log_format': '%(h)s %(l)s %(t)s "%(r)s" %(s)s "%(a)s"'
+            'access_log_format': '%(h)s %(l)s %(t)s "%(r)s" %(s)s "%(a)s"',
         }
         StandaloneApplication(app, _options).run()
 

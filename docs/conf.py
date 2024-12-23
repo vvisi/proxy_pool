@@ -31,8 +31,7 @@ release = '2.1.0'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-]
+extensions = []
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.

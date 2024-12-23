@@ -13,9 +13,10 @@
 __author__ = 'JHao'
 
 import sys
+
 from db.dbClient import DbClient
-from handler.logHandler import LogHandler
 from handler.configHandler import ConfigHandler
+from handler.logHandler import LogHandler
 
 log = LogHandler('launcher')
 
@@ -23,12 +24,14 @@ log = LogHandler('launcher')
 def startServer():
     __beforeStart()
     from api.proxyApi import runFlask
+
     runFlask()
 
 
 def startScheduler():
     __beforeStart()
     from helper.scheduler import runScheduler
+
     runScheduler()
 
 
@@ -42,6 +45,7 @@ def __beforeStart():
 
 def __showVersion():
     from setting import VERSION
+
     log.info("ProxyPool Version: %s" % VERSION)
 
 

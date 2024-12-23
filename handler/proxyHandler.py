@@ -13,13 +13,13 @@
 """
 __author__ = 'JHao'
 
-from helper.proxy import Proxy
 from db.dbClient import DbClient
 from handler.configHandler import ConfigHandler
+from helper.proxy import Proxy
 
 
 class ProxyHandler(object):
-    """ Proxy CRUD operator"""
+    """Proxy CRUD operator"""
 
     def __init__(self):
         self.conf = ConfigHandler()

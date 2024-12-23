@@ -13,15 +13,18 @@
 __author__ = 'JHao'
 
 import re
+
 import requests
-from requests import head
-from util.six import withMetaclass
-from util.singleton import Singleton
 from handler.configHandler import ConfigHandler
+from requests import head
+from util.singleton import Singleton
+from util.six import withMetaclass
 
 conf = ConfigHandler()
 
-HEADER = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0',}
+HEADER = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0',
+}
 
 IP_REGEX = re.compile(r"(.*:.*@)?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}")
 
@@ -55,12 +58,17 @@ def formatValidator(proxy):
 
 @ProxyValidator.addHttpValidator
 def httpTimeOutValidator(proxy):
-    """ http检测超时 """
+    """http检测超时"""
 
-    proxies = {"http": "http://{proxy}".format(proxy=proxy), "https": "https://{proxy}".format(proxy=proxy)}
+    proxies = {
+        "http": "http://{proxy}".format(proxy=proxy),
+        "https": "https://{proxy}".format(proxy=proxy),
+    }
 
     try:
-        r = requests.get(conf.httpUrl, headers=HEADER, proxies=proxies, timeout=conf.verifyTimeout)
+        r = requests.get(
+            conf.httpUrl, headers=HEADER, proxies=proxies, timeout=conf.verifyTimeout
+        )
         return True if (r.status_code == 200 and 'httpbin.org' in r.text) else False
     except Exception as e:
         return False
@@ -70,9 +78,18 @@ def httpTimeOutValidator(proxy):
 def httpsTimeOutValidator(proxy):
     """https检测超时"""
 
-    proxies = {"http": "http://{proxy}".format(proxy=proxy), "https": "https://{proxy}".format(proxy=proxy)}
+    proxies = {
+        "http": "http://{proxy}".format(proxy=proxy),
+        "https": "https://{proxy}".format(proxy=proxy),
+    }
     try:
-        r = requests.get(conf.httpsUrl, headers=HEADER, proxies=proxies, timeout=conf.verifyTimeout, verify=False)
+        r = requests.get(
+            conf.httpsUrl,
+            headers=HEADER,
+            proxies=proxies,
+            timeout=conf.verifyTimeout,
+            verify=False,
+        )
         return True if (r.status_code == 200 and '腾讯网') in r.text else False
     except Exception as e:
         return False

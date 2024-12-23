@@ -20,7 +20,9 @@ def testSsdbClient():
     uri = "ssdb://@127.0.0.1:8888"
     db = DbClient(uri)
     db.changeTable("use_proxy")
-    proxy = Proxy.createFromJson('{"proxy": "118.190.79.36:8090", "https": false, "fail_count": 0, "region": "", "anonymous": "", "source": "freeProxy14", "check_count": 4, "last_status": true, "last_time": "2021-05-26 10:58:04"}')
+    proxy = Proxy.createFromJson(
+        '{"proxy": "118.190.79.36:8090", "https": false, "fail_count": 0, "region": "", "anonymous": "", "source": "freeProxy14", "check_count": 4, "last_status": true, "last_time": "2021-05-26 10:58:04"}'
+    )
 
     print("put: ", db.put(proxy))
 

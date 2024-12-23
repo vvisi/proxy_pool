@@ -17,8 +17,8 @@ __author__ = 'JHao'
 import os
 import sys
 
-from util.six import urlparse, withMetaclass
 from util.singleton import Singleton
+from util.six import urlparse, withMetaclass
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -80,11 +80,13 @@ class DbClient(withMetaclass(Singleton)):
         else:
             pass
         assert __type, 'type error, Not support DB type: {}'.format(self.db_type)
-        self.client = getattr(__import__(__type), "%sClient" % self.db_type.title())(host=self.db_host,
-                                                                                     port=self.db_port,
-                                                                                     username=self.db_user,
-                                                                                     password=self.db_pwd,
-                                                                                     db=self.db_name)
+        self.client = getattr(__import__(__type), "%sClient" % self.db_type.title())(
+            host=self.db_host,
+            port=self.db_port,
+            username=self.db_user,
+            password=self.db_pwd,
+            db=self.db_name,
+        )
 
     def get(self, https, **kwargs):
         return self.client.get(https, **kwargs)
