@@ -90,7 +90,7 @@ def httpsTimeOutValidator(proxy):
             timeout=conf.verifyTimeout,
             verify=False,
         )
-        return True if (r.status_code == 200 and '腾讯网') in r.text else False
+        return True if (r.status_code == 200 and '腾讯网' in r.text) else False
     except Exception as e:
         return False
 
