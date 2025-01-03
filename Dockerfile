@@ -6,8 +6,8 @@ WORKDIR /app
 
 COPY ./requirements.txt .
 
-# apk repository
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+# apk 源为官方源
+RUN sed -i 's|http://dl-cdn.alpinelinux.org/alpine/|http://dl-cdn.alpinelinux.org/alpine/v3.15/|g' /etc/apk/repositories
 
 # timezone
 RUN apk add -U tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && apk del tzdata

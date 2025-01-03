@@ -1,4 +1,3 @@
-version: '3'
 services:
   proxy_pool:
     build: .
@@ -11,8 +10,8 @@ services:
     links:
       - redis
     environment:
-      DB_CONN: "redis://@redis:16379/5"
-      REDIS_PASSWORD: "xsm"
+      DB_CONN: "redis://@redis:6379/5"
+      REDIS_PASSWORD: "password"
     logging:
       driver: json-file
       options:
@@ -23,12 +22,12 @@ services:
     container_name: redis
     restart: always
     ports:
-      - "16379:16379"
+      - "6379:6379"
     volumes:
       - /home/redis/container:/data
     command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
     environment:
-      REDIS_PASSWORD: "xsm"
+      REDIS_PASSWORD: "password"
     logging:
       driver: json-file
       options:

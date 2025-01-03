@@ -99,11 +99,11 @@ python proxyPool.py server
 ```
 
 ### Docker Image
-
+* 本fork修改已同步docker镜像， 可以直接从dockerhub拉取镜像:
 ```bash
-docker pull jhao104/proxy_pool
+docker pull vvvis/proxy_pool
 
-docker run --env DB_CONN=redis://:password@ip:port/0 -p 5010:5010 jhao104/proxy_pool:latest
+docker run --env DB_CONN=redis://:password@ip:port/0 -p 5010:5010 vvvis/proxy_pool:latest
 ```
 ### docker-compose
 
