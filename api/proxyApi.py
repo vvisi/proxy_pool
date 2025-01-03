@@ -42,7 +42,7 @@ class JsonResponse(Response):
 app.response_class = JsonResponse
 
 api_list = [
-    {"url": "/get", "params": "type: ''https'|''", "desc": "get a proxy"},
+    {"url": "/get", "params": "type: 'https'|'', region: '代理地区, 中文', anonymous: '任意: -1, '", "desc": "get a proxy"},
     {"url": "/pop", "params": "", "desc": "get and delete a proxy"},
     {
         "url": "/delete",
@@ -67,7 +67,12 @@ def index():
 @app.route('/get/')
 def get():
     https = request.args.get("type", "").lower() == 'https'
-    proxy = proxy_handler.get(https)
+    region = request.args.get("region", "").lower()
+    try:
+        anonymous = int(request.args.get("anonymous", '').lower())
+    except:
+        anonymous = -1
+    proxy = proxy_handler.get(https, region, anonymous)
     return proxy.to_dict if proxy else {"code": 0, "src": "no proxy"}
 
 

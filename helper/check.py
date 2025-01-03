@@ -13,7 +13,8 @@
 -------------------------------------------------
 """
 __author__ = 'JHao'
-
+import json
+import requests
 from datetime import datetime
 from threading import Thread
 
@@ -46,6 +47,7 @@ class DoValidator(object):
         proxy.check_count += 1
         proxy.last_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         proxy.last_status = True if http_r else False
+        proxy._anonymous = cls.anonymousValidator(proxy.proxy, proxy.https)
         if http_r:
             if proxy.fail_count > 0:
                 proxy.fail_count -= 1
@@ -91,6 +93,27 @@ class DoValidator(object):
             return r['data'][0]['location']
         except:
             return 'error'
+
+    @classmethod
+    def anonymousValidator(cls, proxy, https):
+        if https:
+            url = 'https://httpbin.org/get'
+            proxy = {'https': proxy}
+        else:
+            url = 'http://httpbin.org/get'
+            proxy = {'http': proxy}
+
+        try:
+            r = requests.get(url, proxies=proxy, timeout=5)
+            r = json.loads(r.text)
+            if ',' in r.get('origin'):
+                return 0
+            elif r.get('headers').get('Proxy-connecttion', False):
+                return 1
+            else:
+                return 2
+        except:
+            return -1
 
 
 class _ThreadChecker(Thread):
